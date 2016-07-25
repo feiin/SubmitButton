@@ -25,8 +25,8 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jwD-nP-X9V">
-                                <rect key="frame" x="167" y="364" width="30" height="30"/>
-                                <state key="normal" title="0.9"/>
+                                <rect key="frame" x="148" y="364" width="68" height="30"/>
+                                <state key="normal" title="Loading..."/>
                                 <connections>
                                     <action selector="loading2Action:" destination="BYZ-38-t0r" eventType="touchUpInside" id="oXz-RU-A4p"/>
                                 </connections>
