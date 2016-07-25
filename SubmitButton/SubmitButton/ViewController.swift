@@ -16,9 +16,11 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        let frame = CGRect(x: 50, y: 100, width: 200, height: 80)
+        let frame = CGRect(x: 50, y: 100, width: 200, height: 40)
+        
         button = SubmitButton(frame: frame)
         button.layer.cornerRadius = 5
+        button.checkLineWidth = 6
         
 //        button.conr
         button.backgroundColor = UIColor(red:0, green:206/255, blue:148/255, alpha:1)
@@ -26,7 +28,7 @@ class ViewController: UIViewController {
         self.view.addSubview(button)
     }
     @IBAction func start(sender: AnyObject) {
-        button.startLoadingAnimation(.Loading)
+        button.changeState(.Loading)
     }
     @IBAction func loading2Action(sender: AnyObject) {
         button.progress = 1

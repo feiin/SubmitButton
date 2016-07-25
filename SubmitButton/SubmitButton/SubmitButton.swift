@@ -12,6 +12,7 @@ enum SubmitButtonState: Int {
     case Original = 0
     case Loading = 1
     case Finished = 2
+    case Error = 3
 }
 
 
@@ -25,7 +26,7 @@ class SubmitButton: UIButton {
     }
     */
     
-//    var cornerRadius: CGFloat = 0
+    var checkLineWidth: CGFloat = 8
     var originalColor: CGColorRef = UIColor(red:0, green:206/255, blue:148/255, alpha:1).CGColor
     var originalBorderColor: CGColorRef = UIColor(red:0, green:206/255, blue:148/255, alpha:1).CGColor
     private var borderWidth: CGFloat = 5.0
@@ -140,7 +141,7 @@ class SubmitButton: UIButton {
         layer.path = self.successPath().CGPath
         layer.fillColor = UIColor.clearColor().CGColor
         layer.strokeColor = UIColor.whiteColor().CGColor
-        layer.lineWidth = 10
+        layer.lineWidth = self.checkLineWidth
         layer.lineCap = kCALineCapRound
         layer.lineJoin = kCALineJoinRound
         return layer
@@ -172,9 +173,22 @@ class SubmitButton: UIButton {
 
     func changeState(toState: SubmitButtonState ) {
         
+        self.setTitleColor(UIColor.clearColor(), forState: UIControlState.Normal)
+
+        switch toState {
+        case .Original: break
+        case .Loading:
+            startLoadingAnimation()
+        case .Finished:
+            self.layer.addSublayer(successLayer)
+            successAnimation()
+            self.checkAnimation()
+        case .Error:
+            break
+        }
     }
     
-    func startLoadingAnimation(state: SubmitButtonState) {
+    private func startLoadingAnimation() {
 
         let group = CAAnimationGroup()
         group.duration = 0.5
@@ -218,7 +232,7 @@ class SubmitButton: UIButton {
         
     }
     
-    func successAnimation() {
+    private func successAnimation() {
         
         let group = CAAnimationGroup()
         group.duration = 0.5
@@ -329,11 +343,7 @@ extension SubmitButton {
         
         if animName == "loading" && self.progress == 1 {
             self.resetProgress()
-            self.layer.addSublayer(successLayer)
-            self.setTitleColor(UIColor.clearColor(), forState: UIControlState.Normal)
-            self.successAnimation()
-            self.checkAnimation()
-            
+            self.changeState(.Finished)
         }
         
         if animName == "success" {
