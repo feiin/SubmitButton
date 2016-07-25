@@ -30,7 +30,7 @@ class SubmitButton: UIButton {
     var originalColor: CGColorRef = UIColor(red:0, green:206/255, blue:148/255, alpha:1).CGColor
     var originalBorderColor: CGColorRef = UIColor(red:0, green:206/255, blue:148/255, alpha:1).CGColor
     private var borderWidth: CGFloat = 5.0
-
+    private var originTitleColor:UIColor!
     
     
     private lazy var loadingCornerRadius:CGFloat = {
@@ -40,7 +40,6 @@ class SubmitButton: UIButton {
     private lazy var originHeight:CGFloat = {
         return self.layer.bounds.height
     }()
-  
     
     private lazy var loadingBounds:CGRect = {
         
@@ -135,6 +134,13 @@ class SubmitButton: UIButton {
         
     }
     
+    private func resetSuccessLayer ()
+    {
+        self.successLayer.removeAllAnimations()
+        self.successLayer.removeFromSuperlayer()
+        
+    }
+    
     private lazy var successLayer: CAShapeLayer = {
         
         let layer = CAShapeLayer()
@@ -176,8 +182,13 @@ class SubmitButton: UIButton {
         self.setTitleColor(UIColor.clearColor(), forState: UIControlState.Normal)
 
         switch toState {
-        case .Original: break
+        case .Original:
+            self.resetProgress()
+            self.resetProgressBar()
+            self.resetSuccessLayer()
+            self.setTitleColor(self.originTitleColor, forState: UIControlState.Normal)
         case .Loading:
+            self.resetSuccessLayer()
             startLoadingAnimation()
         case .Finished:
             self.layer.addSublayer(successLayer)
@@ -312,7 +323,7 @@ class SubmitButton: UIButton {
 
         super.init(frame: frame)
         layer.masksToBounds = true
-
+        self.originTitleColor = self.currentTitleColor
         self.layer.addSublayer(self.progressBarLayer)
         self.layer.addSublayer(self.progressLayer)
 

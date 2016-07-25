@@ -18,24 +18,31 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NSq-vJ-GMn">
-                                <rect key="frame" x="90" y="364" width="30" height="30"/>
-                                <state key="normal" title="0.5"/>
+                                <rect key="frame" x="114" y="416" width="81" height="30"/>
+                                <state key="normal" title="process:0.5"/>
                                 <connections>
-                                    <action selector="loadingAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gc9-uO-KMM"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jwD-nP-X9V">
-                                <rect key="frame" x="148" y="364" width="68" height="30"/>
-                                <state key="normal" title="Loading..."/>
-                                <connections>
-                                    <action selector="loading2Action:" destination="BYZ-38-t0r" eventType="touchUpInside" id="oXz-RU-A4p"/>
+                                    <action selector="loadingProccess:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ksV-mb-ULi"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uNx-KZ-Ui9">
-                                <rect key="frame" x="137" y="423" width="32" height="30"/>
+                                <rect key="frame" x="54" y="416" width="52" height="30"/>
                                 <state key="normal" title="start"/>
                                 <connections>
                                     <action selector="start:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Oj2-mT-eyL"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OX7-3Q-9eS">
+                                <rect key="frame" x="296" y="416" width="35" height="30"/>
+                                <state key="normal" title="reset"/>
+                                <connections>
+                                    <action selector="resetButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="eev-Z9-XSa"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jwD-nP-X9V">
+                                <rect key="frame" x="203" y="416" width="68" height="30"/>
+                                <state key="normal" title="Loading..."/>
+                                <connections>
+                                    <action selector="loading2Finished:" destination="BYZ-38-t0r" eventType="touchUpInside" id="B1r-pv-pxc"/>
                                 </connections>
                             </button>
                         </subviews>
