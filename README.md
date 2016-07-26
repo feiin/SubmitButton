@@ -1,6 +1,6 @@
 # SubmitButton
 
- An animated Submmit Button written in Swift.
+ An animated Submit Button written in Swift.
 
 ![preview](./preview/preview.gif)
 
