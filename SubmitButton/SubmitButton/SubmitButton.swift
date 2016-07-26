@@ -15,7 +15,8 @@ enum SubmitButtonState: Int {
     case Error = 3
 }
 
-
+ 
+@IBDesignable
 class SubmitButton: UIButton {
 
     /*
@@ -26,12 +27,14 @@ class SubmitButton: UIButton {
     }
     */
     
-    var checkLineWidth: CGFloat = 8
+   @IBInspectable var checkLineWidth: CGFloat = 8
     var originalColor: CGColorRef = UIColor(red:0, green:206/255, blue:148/255, alpha:1).CGColor
     var originalBorderColor: CGColorRef = UIColor(red:0, green:206/255, blue:148/255, alpha:1).CGColor
-    private var borderWidth: CGFloat = 5.0
+    @IBInspectable var progressBorderWidth: CGFloat = 5.0
     private var originTitleColor:UIColor!
     
+    
+    var stateChanged:((toState: SubmitButtonState)->Void)? = nil
     
     private lazy var loadingCornerRadius:CGFloat = {
         return self.layer.bounds.height / 2
@@ -64,7 +67,7 @@ class SubmitButton: UIButton {
         let arcCenter = CGPoint(x: radius, y: radius)
         let startAngle = CGFloat(-M_PI_2)
         let endAngle = startAngle + CGFloat(M_PI*2)
-        let path = UIBezierPath(arcCenter: arcCenter, radius: radius - borderWidth/2, startAngle: startAngle, endAngle: endAngle, clockwise: true)
+        let path = UIBezierPath(arcCenter: arcCenter, radius: radius - progressBorderWidth/2, startAngle: startAngle, endAngle: endAngle, clockwise: true)
         return path
     }
     
@@ -86,12 +89,11 @@ class SubmitButton: UIButton {
         let layer = CALayer()
         let x = (self.layer.bounds.width - self.layer.bounds.height) / 2
         layer.frame = CGRectMake(0, 0, self.layer.bounds.width, self.layer.bounds.height)
-//        layer.bounds  = CGRectZero
-
+ 
         layer.masksToBounds = true
         layer.cornerRadius = 0
         layer.backgroundColor = self.originalColor
-        layer.borderWidth  = self.borderWidth
+        layer.borderWidth  = self.progressBorderWidth
         layer.borderColor =  self.originalColor
 
         return layer
@@ -113,7 +115,7 @@ class SubmitButton: UIButton {
         layer.masksToBounds = true
         layer.cornerRadius = self.loadingCornerRadius
         layer.backgroundColor = UIColor.clearColor().CGColor
-        layer.lineWidth  = self.borderWidth
+        layer.lineWidth  = self.progressBorderWidth
         layer.borderColor = UIColor.clearColor().CGColor
         
         return layer
@@ -177,7 +179,7 @@ class SubmitButton: UIButton {
     }
     
 
-    func changeState(toState: SubmitButtonState ) {
+    func changeState(toState: SubmitButtonState) -> SubmitButton {
         
         self.setTitleColor(UIColor.clearColor(), forState: UIControlState.Normal)
 
@@ -187,6 +189,10 @@ class SubmitButton: UIButton {
             self.resetProgressBar()
             self.resetSuccessLayer()
             self.setTitleColor(self.originTitleColor, forState: UIControlState.Normal)
+            
+            if let stateChanged = self.stateChanged {
+                stateChanged(toState: .Original)
+            }
         case .Loading:
             self.resetSuccessLayer()
             startLoadingAnimation()
@@ -197,6 +203,7 @@ class SubmitButton: UIButton {
         case .Error:
             break
         }
+        return self
     }
     
     private func startLoadingAnimation() {
@@ -252,7 +259,6 @@ class SubmitButton: UIButton {
         group.fillMode = kCAFillModeForwards
         group.removedOnCompletion = false
         group.delegate = self
-//        self.layer.backgroundColor = originalColor
         
         group.setValue("success", forKey: "animationName")
         group.setValue(self.progressBarLayer, forKey: "layer")
@@ -279,9 +285,7 @@ class SubmitButton: UIButton {
         let borderColorAnimation = CABasicAnimation(keyPath: "borderColor")
         borderColorAnimation.fromValue = self.originalColor
         borderColorAnimation.toValue = self.originalColor
-        
-//        self.progressBarLayer.borderColor = self.originalColor
-        
+    
         group.animations = [sizeAnimation, boundsAnimation , cornerRadiusAnimation, backgroundColorAnimation, borderColorAnimation]
         
         self.progressBarLayer.addAnimation(group, forKey: "animation")
@@ -326,6 +330,10 @@ class SubmitButton: UIButton {
         self.originTitleColor = self.currentTitleColor
         self.layer.addSublayer(self.progressBarLayer)
         self.layer.addSublayer(self.progressLayer)
+        
+        
+        print(self.originTitleColor)
+        print(self.backgroundColor)
 
 
     }
@@ -333,6 +341,14 @@ class SubmitButton: UIButton {
     required init?(coder aDecoder: NSCoder) {
 //        fatalError("init(coder:) has not been implemented")
         super.init(coder: aDecoder)
+        layer.masksToBounds = true
+        self.originTitleColor = self.currentTitleColor
+        self.layer.addSublayer(self.progressBarLayer)
+        self.layer.addSublayer(self.progressLayer)
+        
+        print(self.originTitleColor)
+        print(self.backgroundColor)
+
     }
     
 
@@ -343,23 +359,31 @@ extension SubmitButton {
     // MARK : CAAnimationDelegate
     override func animationDidStart(anim: CAAnimation) {
         
-        
     }
     
     override func animationDidStop(anim: CAAnimation, finished flag: Bool) {
      
         let animName = anim.valueForKey("animationName") as! String
         
-        print(animName)
-        
-        if animName == "loading" && self.progress == 1 {
-            self.resetProgress()
-            self.changeState(.Finished)
-        }
-        
-        if animName == "success" {
-            
+        switch animName {
+        case "startLoading":
+            if let stateChanged = self.stateChanged {
+                stateChanged(toState: .Loading)
+            }
+            break;
+        case "loading":
+            if(self.progress == 1) {
+                self.resetProgress()
+                self.changeState(.Finished)
+                if let stateChanged = self.stateChanged {
+                    stateChanged(toState: .Finished)
+                }
+            }
+        case "success":
             self.resetProgressBar()
+
+        default:
+            break;
         }
     }
 }

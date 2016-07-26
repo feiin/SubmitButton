@@ -12,6 +12,7 @@ class ViewController: UIViewController {
 
     var button:SubmitButton!
     
+    @IBOutlet weak var btn1: SubmitButton!
    
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,7 +27,25 @@ class ViewController: UIViewController {
         button.backgroundColor = UIColor(red:0, green:206/255, blue:148/255, alpha:1)
         button.setTitle("Submit", forState: .Normal)
         self.view.addSubview(button)
+        
+        
+        btn1.stateChanged = {
+            (toState:SubmitButtonState) in
+            if toState == .Loading {
+                self.btn1.progress  = 1
+            }
+//            print(toState)
+        }
+     }
+    
+    @IBAction func btnClicked(sender: AnyObject) {
+        let btn = sender as! SubmitButton
+            
+        btn.changeState(.Loading)
+//        btn.progress = 1
+
     }
+    
     
     @IBAction func resetButton(sender: AnyObject) {
         button.changeState(.Original)
