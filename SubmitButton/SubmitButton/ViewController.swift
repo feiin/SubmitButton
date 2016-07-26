@@ -14,6 +14,7 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var btn1: SubmitButton!
    
+    @IBOutlet weak var btn2: SubmitButton!
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -26,29 +27,59 @@ class ViewController: UIViewController {
         
         button.backgroundColor = UIColor(red:0, green:206/255, blue:148/255, alpha:1)
         button.setTitle("Submit", forState: .Normal)
+//        button.setTitleColor(UIColor.blueColor(), forState: .Normal)
+
         self.view.addSubview(button)
-        
-        
+        btn1.progressColor = UIColor.redColor()
         btn1.stateChanged = {
             (toState:SubmitButtonState) in
             if toState == .Loading {
                 self.btn1.progress  = 1
             }
-//            print(toState)
+         }
+        
+        btn3.layer.borderWidth = 5
+        btn3.layer.borderColor = UIColor.redColor().CGColor
+        btn2.stateChanged = {
+            (toState:SubmitButtonState) in
+            if toState == .Loading {
+                self.btn2.progress  = 1
+            }
+        }
+        
+        btn3.stateChanged = {
+            (toState:SubmitButtonState) in
+            if toState == .Loading {
+                self.btn3.progress  = 1
+            }
         }
      }
+    @IBOutlet weak var btn3: SubmitButton!
     
     @IBAction func btnClicked(sender: AnyObject) {
         let btn = sender as! SubmitButton
-            
-        btn.changeState(.Loading)
+        if btn.submitState != .Normal  {
+            btn.changeState(.Normal)
+
+        } else {
+            btn.changeState(.Loading)
+        }
 //        btn.progress = 1
 
     }
     
+    @IBAction func btn2Click(sender: AnyObject) {
+        let btn = sender as! SubmitButton
+        if btn.submitState != .Normal  {
+            btn.changeState(.Normal)
+            
+        } else {
+            btn.changeState(.Loading)
+        }
+    }
     
     @IBAction func resetButton(sender: AnyObject) {
-        button.changeState(.Original)
+        button.changeState(.Normal)
     }
     
     @IBAction func start(sender: AnyObject) {

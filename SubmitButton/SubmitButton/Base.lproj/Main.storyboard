@@ -18,46 +18,74 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NSq-vJ-GMn">
-                                <rect key="frame" x="114" y="416" width="81" height="30"/>
+                                <rect key="frame" x="116" y="176" width="81" height="30"/>
                                 <state key="normal" title="process:0.5"/>
                                 <connections>
                                     <action selector="loadingProccess:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ksV-mb-ULi"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uNx-KZ-Ui9">
-                                <rect key="frame" x="54" y="416" width="52" height="30"/>
+                                <rect key="frame" x="56" y="176" width="52" height="30"/>
                                 <state key="normal" title="start"/>
                                 <connections>
                                     <action selector="start:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Oj2-mT-eyL"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OX7-3Q-9eS">
-                                <rect key="frame" x="296" y="416" width="35" height="30"/>
+                                <rect key="frame" x="298" y="176" width="35" height="30"/>
                                 <state key="normal" title="reset"/>
                                 <connections>
                                     <action selector="resetButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="eev-Z9-XSa"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jwD-nP-X9V">
+                                <rect key="frame" x="205" y="176" width="68" height="30"/>
+                                <state key="normal" title="Loading..."/>
+                                <connections>
+                                    <action selector="loading2Finished:" destination="BYZ-38-t0r" eventType="touchUpInside" id="B1r-pv-pxc"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FXd-9g-sZM" customClass="SubmitButton" customModule="SubmitButton" customModuleProvider="target">
-                                <rect key="frame" x="128" y="238" width="164" height="30"/>
+                                <rect key="frame" x="56" y="214" width="175" height="31"/>
                                 <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" title="Click">
+                                <state key="normal" title="btn1">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="checkLineWidth">
+                                        <real key="value" value="3"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="progressBorderWidth">
                                         <real key="value" value="2"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="successColor">
+                                        <color key="value" red="1" green="0.42545816199999997" blue="0.070588235289999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="btnClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="TDc-es-DNM"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jwD-nP-X9V">
-                                <rect key="frame" x="203" y="416" width="68" height="30"/>
-                                <state key="normal" title="Loading..."/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="py2-dV-NIX" customClass="SubmitButton" customModule="SubmitButton" customModuleProvider="target">
+                                <rect key="frame" x="56" y="258" width="175" height="34"/>
+                                <state key="normal" title="btn2"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="progressColor">
+                                        <color key="value" red="0.035294117649999998" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <action selector="loading2Finished:" destination="BYZ-38-t0r" eventType="touchUpInside" id="B1r-pv-pxc"/>
+                                    <action selector="btn2Click:" destination="BYZ-38-t0r" eventType="touchUpInside" id="NKa-us-GN2"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MQZ-p2-8MT" customClass="SubmitButton" customModule="SubmitButton" customModuleProvider="target">
+                                <rect key="frame" x="56" y="300" width="175" height="34"/>
+                                <color key="backgroundColor" red="0.0" green="0.86516907294832823" blue="0.70267647617145901" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="btn3">
+                                    <color key="titleColor" red="1" green="0.42545816199999997" blue="0.070588235289999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="btn2Click:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dqY-hv-1ZI"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -65,6 +93,8 @@
                     </view>
                     <connections>
                         <outlet property="btn1" destination="FXd-9g-sZM" id="dsY-4l-4de"/>
+                        <outlet property="btn2" destination="py2-dV-NIX" id="qgU-Yo-1xZ"/>
+                        <outlet property="btn3" destination="MQZ-p2-8MT" id="5mT-eT-CRH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

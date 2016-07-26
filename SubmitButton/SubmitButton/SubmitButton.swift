@@ -9,7 +9,7 @@
 import UIKit
 
 enum SubmitButtonState: Int {
-    case Original = 0
+    case Normal = 0
     case Loading = 1
     case Finished = 2
     case Error = 3
@@ -26,15 +26,32 @@ class SubmitButton: UIButton {
         // Drawing code
     }
     */
+   
+    
     
    @IBInspectable var checkLineWidth: CGFloat = 8
-    var originalColor: CGColorRef = UIColor(red:0, green:206/255, blue:148/255, alpha:1).CGColor
-    var originalBorderColor: CGColorRef = UIColor(red:0, green:206/255, blue:148/255, alpha:1).CGColor
-    @IBInspectable var progressBorderWidth: CGFloat = 5.0
-    private var originTitleColor:UIColor!
+   @IBInspectable var progressBorderWidth: CGFloat = 5.0
+   @IBInspectable var successColor:UIColor = UIColor(red:0, green:206/255, blue:148/255, alpha:1)
+   @IBInspectable var progressColor:UIColor = UIColor(red:0, green:206/255, blue:148/255, alpha:1) {
+        didSet {
+            self.progressLayer.strokeColor = progressColor.CGColor
+        }
+    }
     
+  
+    var submitState:SubmitButtonState {
+        get {
+            return btnState
+        }
+    }
     
     var stateChanged:((toState: SubmitButtonState)->Void)? = nil
+    
+    private var originalColor: CGColor?
+    private var originalBorderColor: CGColor?
+    private var originTitleColor:UIColor!
+    
+    private var btnState:SubmitButtonState = .Normal
     
     private lazy var loadingCornerRadius:CGFloat = {
         return self.layer.bounds.height / 2
@@ -110,7 +127,7 @@ class SubmitButton: UIButton {
         layer.path = self.circlePath().CGPath
         layer.strokeEnd = 0
         layer.strokeStart = 0
-        layer.strokeColor = self.originalBorderColor
+        layer.strokeColor = self.progressColor.CGColor
         layer.fillColor = UIColor.clearColor().CGColor
         layer.masksToBounds = true
         layer.cornerRadius = self.loadingCornerRadius
@@ -121,6 +138,14 @@ class SubmitButton: UIButton {
         return layer
         
     }()
+    
+    private func resetLayer ()
+    {
+        self.backgroundColor =  UIColor(CGColor: self.originalColor!)
+        self.layer.borderColor =  self.originalBorderColor
+        self.setTitleColor(self.originTitleColor, forState: UIControlState.Normal)
+    }
+    
     
     private func resetProgress ()
     {
@@ -163,7 +188,6 @@ class SubmitButton: UIButton {
         
         didSet {
             
-            
             if progress < 0.0 {
                 progress = 0.0
              } else if progress >= 0.99 {
@@ -174,26 +198,32 @@ class SubmitButton: UIButton {
                 LoadingAnimation()
 
             }
-//            progressLayer.strokeEnd = progress
         }
     }
     
 
     func changeState(toState: SubmitButtonState) -> SubmitButton {
         
-        self.setTitleColor(UIColor.clearColor(), forState: UIControlState.Normal)
-
+        self.btnState = toState
+        
         switch toState {
-        case .Original:
+        case .Normal:
+            
             self.resetProgress()
             self.resetProgressBar()
             self.resetSuccessLayer()
-            self.setTitleColor(self.originTitleColor, forState: UIControlState.Normal)
-            
+            self.resetLayer()
+            self.progressLayer.removeFromSuperlayer()
+            self.progressBarLayer.removeFromSuperlayer()
             if let stateChanged = self.stateChanged {
-                stateChanged(toState: .Original)
+                stateChanged(toState: .Normal)
             }
         case .Loading:
+            
+            self.initOriginColor()
+             self.layer.addSublayer(self.progressBarLayer)
+            self.layer.addSublayer(self.progressLayer)
+            
             self.resetSuccessLayer()
             startLoadingAnimation()
         case .Finished:
@@ -202,6 +232,11 @@ class SubmitButton: UIButton {
             self.checkAnimation()
         case .Error:
             break
+        }
+        
+        if toState != .Normal
+        {
+            self.setTitleColor(UIColor.clearColor(), forState: .Normal)
         }
         return self
     }
@@ -216,7 +251,8 @@ class SubmitButton: UIButton {
         group.removedOnCompletion = false
         group.delegate = self
         self.layer.backgroundColor = UIColor.clearColor().CGColor
-        
+        self.layer.borderColor = UIColor.clearColor().CGColor
+
         group.setValue("startLoading", forKey: "animationName")
         group.setValue(self.progressBarLayer, forKey: "layer")
         
@@ -242,6 +278,7 @@ class SubmitButton: UIButton {
         
         // borderColor
         let borderColorAnimation = CABasicAnimation(keyPath: "borderColor")
+         borderColorAnimation.fromValue = self.originalColor
          borderColorAnimation.toValue = UIColor.grayColor().CGColor
         
         group.animations = [sizeAnimation, boundsAnimation , cornerRadiusAnimation, backgroundColorAnimation, borderColorAnimation]
@@ -280,22 +317,19 @@ class SubmitButton: UIButton {
         
         // backgroundColor
         let backgroundColorAnimation = CABasicAnimation(keyPath: "backgroundColor")
-        backgroundColorAnimation.toValue = self.originalColor
+        backgroundColorAnimation.toValue = self.successColor.CGColor
         // borderColor
         let borderColorAnimation = CABasicAnimation(keyPath: "borderColor")
-        borderColorAnimation.fromValue = self.originalColor
-        borderColorAnimation.toValue = self.originalColor
+        borderColorAnimation.fromValue = self.successColor.CGColor
+        borderColorAnimation.toValue = self.successColor.CGColor
     
         group.animations = [sizeAnimation, boundsAnimation , cornerRadiusAnimation, backgroundColorAnimation, borderColorAnimation]
         
         self.progressBarLayer.addAnimation(group, forKey: "animation")
         
     }
-
     
-    
-    
-    func LoadingAnimation() {
+   private func LoadingAnimation() {
         
         let pathAnimation = CABasicAnimation(keyPath: "strokeEnd")
         pathAnimation.duration = 1.0
@@ -310,7 +344,7 @@ class SubmitButton: UIButton {
         lastProgress = progress
     }
     
-    func checkAnimation() {
+   private func checkAnimation() {
         let pathAnimation = CABasicAnimation(keyPath: "strokeEnd")
         pathAnimation.duration = 0.35
         pathAnimation.fromValue = 0
@@ -323,19 +357,34 @@ class SubmitButton: UIButton {
         successLayer.addAnimation(pathAnimation, forKey: nil)
     }
     
+    private  func initOriginColor() {
+    
+        if self.originalColor != nil  {
+            //only init first time
+            return
+        }
+    
+        self.originTitleColor = self.currentTitleColor
+        if let bgColor = self.backgroundColor {
+            self.originalColor = bgColor.CGColor
+        } else {
+            self.originalColor = UIColor.clearColor().CGColor
+            
+        }
+        
+        if let borderColor = self.layer.borderColor {
+            self.originalBorderColor = borderColor
+        } else {
+            self.originalBorderColor = UIColor.clearColor().CGColor
+        }
+
+    }
+    
     override init(frame: CGRect) {
 
         super.init(frame: frame)
         layer.masksToBounds = true
         self.originTitleColor = self.currentTitleColor
-        self.layer.addSublayer(self.progressBarLayer)
-        self.layer.addSublayer(self.progressLayer)
-        
-        
-        print(self.originTitleColor)
-        print(self.backgroundColor)
-
-
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -343,12 +392,6 @@ class SubmitButton: UIButton {
         super.init(coder: aDecoder)
         layer.masksToBounds = true
         self.originTitleColor = self.currentTitleColor
-        self.layer.addSublayer(self.progressBarLayer)
-        self.layer.addSublayer(self.progressLayer)
-        
-        print(self.originTitleColor)
-        print(self.backgroundColor)
-
     }
     
 
@@ -358,7 +401,8 @@ extension SubmitButton {
     
     // MARK : CAAnimationDelegate
     override func animationDidStart(anim: CAAnimation) {
-        
+//        let animName = anim.valueForKey("animationName") as! String
+ 
     }
     
     override func animationDidStop(anim: CAAnimation, finished flag: Bool) {
@@ -367,24 +411,27 @@ extension SubmitButton {
         
         switch animName {
         case "startLoading":
+        
             if let stateChanged = self.stateChanged {
                 stateChanged(toState: .Loading)
             }
             break;
         case "loading":
             if(self.progress == 1) {
+                
                 self.resetProgress()
                 self.changeState(.Finished)
                 if let stateChanged = self.stateChanged {
                     stateChanged(toState: .Finished)
                 }
             }
+            
         case "success":
-            self.resetProgressBar()
-
+            break;
         default:
             break;
         }
+        
     }
 }
 
