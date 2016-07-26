@@ -20,16 +20,14 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         
         let frame = CGRect(x: 50, y: 100, width: 200, height: 60)
-        
         button = SubmitButton(frame: frame)
         button.layer.cornerRadius = 10
         button.checkLineWidth = 6
-        
         button.backgroundColor = UIColor(red:0, green:206/255, blue:148/255, alpha:1)
         button.setTitle("Submit", forState: .Normal)
-//        button.setTitleColor(UIColor.blueColor(), forState: .Normal)
-
         self.view.addSubview(button)
+        
+        
         btn1.progressColor = UIColor.redColor()
         btn1.stateChanged = {
             (toState:SubmitButtonState) in
@@ -38,8 +36,7 @@ class ViewController: UIViewController {
             }
          }
         
-        btn3.layer.borderWidth = 5
-        btn3.layer.borderColor = UIColor.redColor().CGColor
+      
         btn2.stateChanged = {
             (toState:SubmitButtonState) in
             if toState == .Loading {
