@@ -24,11 +24,11 @@ class ViewController: UIViewController {
         button.layer.cornerRadius = 10
         button.checkLineWidth = 6
         button.backgroundColor = UIColor(red:0, green:206/255, blue:148/255, alpha:1)
-        button.setTitle("Submit", forState: .Normal)
+        button.setTitle("Submit", for: .normal)
         self.view.addSubview(button)
         
         
-        btn1.progressColor = UIColor.redColor()
+        btn1.progressColor = UIColor.red
         btn1.stateChanged = {
             (toState:SubmitButtonState) in
             if toState == .Loading {
@@ -53,43 +53,42 @@ class ViewController: UIViewController {
      }
     @IBOutlet weak var btn3: SubmitButton!
     
-    @IBAction func btnClicked(sender: AnyObject) {
+    @IBAction func btn1Clicked(_ sender: AnyObject) {
         let btn = sender as! SubmitButton
         if btn.submitState != .Normal  {
-            btn.changeState(.Normal)
-
-        } else {
-            btn.changeState(.Loading)
-        }
-//        btn.progress = 1
-
-    }
-    
-    @IBAction func btn2Click(sender: AnyObject) {
-        let btn = sender as! SubmitButton
-        if btn.submitState != .Normal  {
-            btn.changeState(.Normal)
+            btn.changeState(toState: .Normal)
             
         } else {
-            btn.changeState(.Loading)
+            btn.changeState(toState: .Loading)
+        }
+
+    }
+    
+    @IBAction func btn2Click(_ sender: AnyObject) {
+        let btn = sender as! SubmitButton
+        if btn.submitState != .Normal  {
+            btn.changeState(toState: .Normal)
+            
+        } else {
+            btn.changeState(toState: .Loading)
         }
     }
     
-    @IBAction func resetButton(sender: AnyObject) {
-        button.changeState(.Normal)
+    @IBAction func resetButton(_ sender: AnyObject) {
+        button.changeState(toState: .Normal)
     }
     
-    @IBAction func start(sender: AnyObject) {
-        button.changeState(.Loading)
+    @IBAction func start(_ sender: AnyObject) {
+        button.changeState(toState: .Loading)
     }
     
     
-    @IBAction func loading2Finished(sender: AnyObject) {
+    @IBAction func loading2Finished(_ sender: AnyObject) {
         button.progress = 1
 
     }
 
-    @IBAction func loadingProccess(sender: AnyObject) {
+    @IBAction func loadingProccess(_ sender: AnyObject) {
         button.progress = 0.5
         
     }

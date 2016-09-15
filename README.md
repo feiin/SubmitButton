@@ -56,7 +56,7 @@ just drag ```SubmitButton.swift``` to your project.
 4 changing button state
 
 ```swift
-@IBAction func btnClicked(sender: AnyObject) {
+@IBAction func btnClicked(_ sender: AnyObject) {
         let btn = sender as! SubmitButton
         if btn.submitState != .Normal  {
             btn.changeState(.Normal)
@@ -77,5 +77,5 @@ just drag ```SubmitButton.swift``` to your project.
 
 
 ## Requirements
-- swift2 +
-- xcode7.3 +
+- swift3 +
+- xcode8 +

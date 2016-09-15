@@ -196,13 +196,16 @@
 				TargetAttributes = {
 					FD54DD4F1D41BE6B001CC9DC = {
 						CreatedOnToolsVersion = 7.3.1;
+						LastSwiftMigration = 0800;
 					};
 					FD54DD631D41BE6B001CC9DC = {
 						CreatedOnToolsVersion = 7.3.1;
+						LastSwiftMigration = 0800;
 						TestTargetID = FD54DD4F1D41BE6B001CC9DC;
 					};
 					FD54DD6E1D41BE6B001CC9DC = {
 						CreatedOnToolsVersion = 7.3.1;
+						LastSwiftMigration = 0800;
 						TestTargetID = FD54DD4F1D41BE6B001CC9DC;
 					};
 				};
@@ -407,6 +410,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.swiftmi.SubmitButton;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -418,6 +422,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.swiftmi.SubmitButton;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -429,6 +434,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.swiftmi.SubmitButtonTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SubmitButton.app/SubmitButton";
 			};
 			name = Debug;
@@ -441,6 +447,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.swiftmi.SubmitButtonTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SubmitButton.app/SubmitButton";
 			};
 			name = Release;
@@ -452,6 +459,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.swiftmi.SubmitButtonUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = SubmitButton;
 			};
 			name = Debug;
@@ -463,6 +471,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.swiftmi.SubmitButtonUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = SubmitButton;
 			};
 			name = Release;
@@ -486,6 +495,7 @@
 				FD54DD7A1D41BE6B001CC9DC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		FD54DD7B1D41BE6B001CC9DC /* Build configuration list for PBXNativeTarget "SubmitButtonTests" */ = {
 			isa = XCConfigurationList;
@@ -494,6 +504,7 @@
 				FD54DD7D1D41BE6B001CC9DC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		FD54DD7E1D41BE6B001CC9DC /* Build configuration list for PBXNativeTarget "SubmitButtonUITests" */ = {
 			isa = XCConfigurationList;
@@ -502,6 +513,7 @@
 				FD54DD801D41BE6B001CC9DC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

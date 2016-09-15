@@ -34,7 +34,7 @@ class SubmitButton: UIButton {
    @IBInspectable var successColor:UIColor = UIColor(red:0, green:206/255, blue:148/255, alpha:1)
    @IBInspectable var progressColor:UIColor = UIColor(red:0, green:206/255, blue:148/255, alpha:1) {
         didSet {
-            self.progressLayer.strokeColor = progressColor.CGColor
+            self.progressLayer.strokeColor = progressColor.cgColor
         }
     }
     
@@ -45,7 +45,7 @@ class SubmitButton: UIButton {
         }
     }
     
-    var stateChanged:((toState: SubmitButtonState)->Void)? = nil
+    var stateChanged:((_ toState: SubmitButtonState)->Void)? = nil
     
     private var originalColor: CGColor?
     private var originalBorderColor: CGColor?
@@ -91,13 +91,15 @@ class SubmitButton: UIButton {
     private func successPath() -> UIBezierPath {
         let rect = self.progressLayer.frame;
         let path = UIBezierPath()
-        let point1 = CGPointMake(rect.origin.x + rect.size.width*2 / 10, rect.origin.y + rect.size.height*2 / 3)
-        let point2 = CGPointMake(rect.origin.x + rect.size.width / 3, rect.origin.y + rect.size.height*8 / 10)
         
-        let point3 = CGPointMake(rect.origin.x + rect.size.width*8 / 10, rect.origin.y + rect.size.height*3 / 10)
-        path.moveToPoint(point1)
-        path.addLineToPoint(point2)
-        path.addLineToPoint(point3)
+        
+        let point1 = CGPoint(x: rect.origin.x + rect.size.width*2 / 10, y: rect.origin.y + rect.size.height*2 / 3)
+        let point2 = CGPoint(x: rect.origin.x + rect.size.width / 3, y:rect.origin.y + rect.size.height*8 / 10)
+        
+        let point3 = CGPoint(x: rect.origin.x + rect.size.width*8 / 10, y: rect.origin.y + rect.size.height*3 / 10)
+        path.move(to: point1)
+        path.addLine(to: point2)
+        path.addLine(to: point3)
         return path
         
     }
@@ -105,7 +107,8 @@ class SubmitButton: UIButton {
     private lazy var progressBarLayer:CALayer = {
         let layer = CALayer()
         let x = (self.layer.bounds.width - self.layer.bounds.height) / 2
-        layer.frame = CGRectMake(0, 0, self.layer.bounds.width, self.layer.bounds.height)
+    
+        layer.frame = CGRect(x: 0, y: 0, width: self.layer.bounds.width, height: self.layer.bounds.height)
  
         layer.masksToBounds = true
         layer.cornerRadius = 0
@@ -122,18 +125,18 @@ class SubmitButton: UIButton {
         let layer = CAShapeLayer()
         let x = (self.layer.bounds.width - self.layer.bounds.height) / 2
         
-        layer.frame = CGRectMake(x, 0, self.layer.bounds.height, self.layer.bounds.height)
+        layer.frame = CGRect(x:x, y:0, width:self.layer.bounds.height, height: self.layer.bounds.height)
         layer.bounds  = self.loadingBounds
-        layer.path = self.circlePath().CGPath
+        layer.path = self.circlePath().cgPath
         layer.strokeEnd = 0
         layer.strokeStart = 0
-        layer.strokeColor = self.progressColor.CGColor
-        layer.fillColor = UIColor.clearColor().CGColor
+        layer.strokeColor = self.progressColor.cgColor
+        layer.fillColor = UIColor.clear.cgColor
         layer.masksToBounds = true
         layer.cornerRadius = self.loadingCornerRadius
-        layer.backgroundColor = UIColor.clearColor().CGColor
+        layer.backgroundColor = UIColor.clear.cgColor
         layer.lineWidth  = self.progressBorderWidth
-        layer.borderColor = UIColor.clearColor().CGColor
+        layer.borderColor = UIColor.clear.cgColor
         
         return layer
         
@@ -141,13 +144,13 @@ class SubmitButton: UIButton {
     
     private func resetLayer ()
     {
-        self.backgroundColor =  UIColor(CGColor: self.originalColor!)
+        self.backgroundColor =  UIColor(cgColor: self.originalColor!)
         self.layer.borderColor =  self.originalBorderColor
-        self.setTitleColor(self.originTitleColor, forState: UIControlState.Normal)
+        self.setTitleColor(self.originTitleColor, for: UIControlState.normal)
     }
     
     
-    private func resetProgress ()
+    internal func resetProgress ()
     {
        self.progressLayer.removeAllAnimations()
        self.progress = 0;
@@ -171,9 +174,9 @@ class SubmitButton: UIButton {
     private lazy var successLayer: CAShapeLayer = {
         
         let layer = CAShapeLayer()
-        layer.path = self.successPath().CGPath
-        layer.fillColor = UIColor.clearColor().CGColor
-        layer.strokeColor = UIColor.whiteColor().CGColor
+        layer.path = self.successPath().cgPath
+        layer.fillColor = UIColor.clear.cgColor
+        layer.strokeColor = UIColor.white.cgColor
         layer.lineWidth = self.checkLineWidth
         layer.lineCap = kCALineCapRound
         layer.lineJoin = kCALineJoinRound
@@ -202,7 +205,7 @@ class SubmitButton: UIButton {
     }
     
 
-    func changeState(toState: SubmitButtonState) -> SubmitButton {
+    func changeState(toState: SubmitButtonState) {
         
         self.btnState = toState
         
@@ -216,7 +219,7 @@ class SubmitButton: UIButton {
             self.progressLayer.removeFromSuperlayer()
             self.progressBarLayer.removeFromSuperlayer()
             if let stateChanged = self.stateChanged {
-                stateChanged(toState: .Normal)
+                stateChanged(.Normal)
             }
         case .Loading:
             
@@ -236,9 +239,8 @@ class SubmitButton: UIButton {
         
         if toState != .Normal
         {
-            self.setTitleColor(UIColor.clearColor(), forState: .Normal)
+            self.setTitleColor(UIColor.clear, for: .normal)
         }
-        return self
     }
     
     private func startLoadingAnimation() {
@@ -248,10 +250,10 @@ class SubmitButton: UIButton {
         group.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
         group.beginTime = CACurrentMediaTime() + 0.1
         group.fillMode = kCAFillModeForwards
-        group.removedOnCompletion = false
+        group.isRemovedOnCompletion = false
         group.delegate = self
-        self.layer.backgroundColor = UIColor.clearColor().CGColor
-        self.layer.borderColor = UIColor.clearColor().CGColor
+        self.layer.backgroundColor = UIColor.clear.cgColor
+        self.layer.borderColor = UIColor.clear.cgColor
 
         group.setValue("startLoading", forKey: "animationName")
         group.setValue(self.progressBarLayer, forKey: "layer")
@@ -259,13 +261,13 @@ class SubmitButton: UIButton {
         // frame
         let sizeAnimation = CABasicAnimation(keyPath: "frame")
         let x = (self.layer.bounds.width - self.layer.bounds.height) / 2
-        let toFrame = CGRectMake(x, 0, self.layer.bounds.height, self.layer.bounds.height)
+        let toFrame = CGRect(x:x, y:0, width: self.layer.bounds.height,height: self.layer.bounds.height)
 
-        sizeAnimation.toValue = NSValue(CGRect: toFrame)
+        sizeAnimation.toValue = NSValue(cgRect: toFrame)
         
         // bounds
         let boundsAnimation = CABasicAnimation(keyPath: "bounds")
-        boundsAnimation.toValue = NSValue(CGRect: self.loadingBounds)
+        boundsAnimation.toValue = NSValue(cgRect: self.loadingBounds)
         
         
         // cornerRadius
@@ -274,16 +276,16 @@ class SubmitButton: UIButton {
         
         // backgroundColor
         let backgroundColorAnimation = CABasicAnimation(keyPath: "backgroundColor")
-        backgroundColorAnimation.toValue = UIColor.clearColor().CGColor
+        backgroundColorAnimation.toValue = UIColor.clear.cgColor
         
         // borderColor
         let borderColorAnimation = CABasicAnimation(keyPath: "borderColor")
          borderColorAnimation.fromValue = self.originalColor
-         borderColorAnimation.toValue = UIColor.grayColor().CGColor
+         borderColorAnimation.toValue = UIColor.gray.cgColor
         
         group.animations = [sizeAnimation, boundsAnimation , cornerRadiusAnimation, backgroundColorAnimation, borderColorAnimation]
         
-        self.progressBarLayer.addAnimation(group, forKey: "anim")
+        self.progressBarLayer.add(group, forKey: "anim")
         
     }
     
@@ -294,7 +296,7 @@ class SubmitButton: UIButton {
         group.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
         group.beginTime = CACurrentMediaTime() + 0.1
         group.fillMode = kCAFillModeForwards
-        group.removedOnCompletion = false
+        group.isRemovedOnCompletion = false
         group.delegate = self
         
         group.setValue("success", forKey: "animationName")
@@ -302,13 +304,13 @@ class SubmitButton: UIButton {
         
         // frame
         let sizeAnimation = CABasicAnimation(keyPath: "frame")
-        let toFrame = CGRectMake(0, 0, self.layer.bounds.width, self.layer.bounds.height)
+        let toFrame = CGRect(x:0, y: 0, width:self.layer.bounds.width,height: self.layer.bounds.height)
         
-        sizeAnimation.toValue = NSValue(CGRect: toFrame)
+        sizeAnimation.toValue = NSValue(cgRect: toFrame)
         
         // bounds
         let boundsAnimation = CABasicAnimation(keyPath: "bounds")
-        boundsAnimation.toValue = NSValue(CGRect: self.originBounds)
+        boundsAnimation.toValue = NSValue(cgRect: self.originBounds)
         
         
         // cornerRadius
@@ -317,15 +319,15 @@ class SubmitButton: UIButton {
         
         // backgroundColor
         let backgroundColorAnimation = CABasicAnimation(keyPath: "backgroundColor")
-        backgroundColorAnimation.toValue = self.successColor.CGColor
+        backgroundColorAnimation.toValue = self.successColor.cgColor
         // borderColor
         let borderColorAnimation = CABasicAnimation(keyPath: "borderColor")
-        borderColorAnimation.fromValue = self.successColor.CGColor
-        borderColorAnimation.toValue = self.successColor.CGColor
+        borderColorAnimation.fromValue = self.successColor.cgColor
+        borderColorAnimation.toValue = self.successColor.cgColor
     
         group.animations = [sizeAnimation, boundsAnimation , cornerRadiusAnimation, backgroundColorAnimation, borderColorAnimation]
         
-        self.progressBarLayer.addAnimation(group, forKey: "animation")
+        self.progressBarLayer.add(group, forKey: "animation")
         
     }
     
@@ -337,10 +339,10 @@ class SubmitButton: UIButton {
         pathAnimation.toValue = progress
         pathAnimation.delegate = self
         pathAnimation.setValue("loading", forKey: "animationName")
-        pathAnimation.removedOnCompletion = false
+        pathAnimation.isRemovedOnCompletion = false
         pathAnimation.fillMode = kCAFillModeForwards
 
-        progressLayer.addAnimation(pathAnimation, forKey: nil)
+        progressLayer.add(pathAnimation, forKey: nil)
         lastProgress = progress
     }
     
@@ -351,10 +353,10 @@ class SubmitButton: UIButton {
         pathAnimation.toValue = 1
         pathAnimation.delegate = self
         pathAnimation.setValue("check", forKey: "animationName")
-        pathAnimation.removedOnCompletion = false
+        pathAnimation.isRemovedOnCompletion = false
         pathAnimation.fillMode = kCAFillModeForwards
         
-        successLayer.addAnimation(pathAnimation, forKey: nil)
+        successLayer.add(pathAnimation, forKey: nil)
     }
     
     private  func initOriginColor() {
@@ -366,16 +368,16 @@ class SubmitButton: UIButton {
     
         self.originTitleColor = self.currentTitleColor
         if let bgColor = self.backgroundColor {
-            self.originalColor = bgColor.CGColor
+            self.originalColor = bgColor.cgColor
         } else {
-            self.originalColor = UIColor.clearColor().CGColor
+            self.originalColor = UIColor.clear.cgColor
             
         }
         
         if let borderColor = self.layer.borderColor {
             self.originalBorderColor = borderColor
         } else {
-            self.originalBorderColor = UIColor.clearColor().CGColor
+            self.originalBorderColor = UIColor.clear.cgColor
         }
 
     }
@@ -394,35 +396,36 @@ class SubmitButton: UIButton {
         self.originTitleColor = self.currentTitleColor
     }
     
-
+ 
 }
 
-extension SubmitButton {
+extension SubmitButton: CAAnimationDelegate {
     
     // MARK : CAAnimationDelegate
-    override func animationDidStart(anim: CAAnimation) {
+    
+    func animationDidStart(_ anim: CAAnimation) {
 //        let animName = anim.valueForKey("animationName") as! String
  
     }
     
-    override func animationDidStop(anim: CAAnimation, finished flag: Bool) {
+    func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
      
-        let animName = anim.valueForKey("animationName") as! String
+        let animName = anim.value(forKey:"animationName") as! String
         
         switch animName {
         case "startLoading":
         
             if let stateChanged = self.stateChanged {
-                stateChanged(toState: .Loading)
+                stateChanged(.Loading)
             }
             break;
         case "loading":
             if(self.progress == 1) {
                 
                 self.resetProgress()
-                self.changeState(.Finished)
+                self.changeState(toState: .Finished)
                 if let stateChanged = self.stateChanged {
-                    stateChanged(toState: .Finished)
+                    stateChanged(.Finished)
                 }
             }
             
